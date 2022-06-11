@@ -1,0 +1,10 @@
+mysql_root_password: 123456
+mysql_databases:
+  - name: lojinha01
+    encoding: latin1
+    collation: latin1_general_ci
+mysql_users:
+  - name: amdfretias
+    host: "%"
+    password: 123456
+    priv: "lojinha01.*:ALL"

@@ -1,0 +1,12 @@
+[Unit]
+Descriprion=applicarion
+After=network.target 
+
+[Service]
+User=app 
+WorkingDirectory=/opt/applicarion
+ExecStar=/usr/bim/java -jar  -Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom /opt/application/target/ *.jar
+SyslogIdentifier=applicarion-%i 
+
+[Install]
+WantedBy=multi-user.target 

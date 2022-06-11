@@ -1,0 +1,18 @@
+- name: upgrade dos package.
+  yum:
+    name: "*"
+    state: latest
+- name: instalar do  git
+  yum:
+    name: git
+    state: latest  
+  tasks:
+  - name: configurar hosts tab ansible
+    lineinfile: 
+        dest: /etc/hosts
+        state: present
+        line: "{{item}}"
+    with_items: 
+      - 192.168.56.10 control-node
+      - 192.168.56.11 app01
+      - 192.168.56.12 db01      

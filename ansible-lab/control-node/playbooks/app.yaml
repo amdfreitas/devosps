@@ -1,0 +1,88 @@
+---
+- name: Configurar  servidor  de aplicacao.
+  hosts: app01
+
+  user: vagrant
+  become: yes
+  vars:
+    - dbhost: db01
+    - dbname: "db01"
+    - dbusername: "root"
+    - dbpassword: "123456"
+    
+  tasks:
+    - name: adiciona user app
+      user:
+          name: app
+          comment: usuario aplication
+          uid: 500
+    - name: install maven
+      yum:
+          name: maven
+          state: latest
+    - name: install java
+      yum:
+          name: java-1.8.0-openjdk
+          state: latest
+    - name: criar diretorio app
+      file:
+        path: /opt/aplication
+        state: directory
+        owner: app
+        group: app
+
+  roles:
+    - configurar-default-so  
+
+  #- name: Download de url
+  #  get_url:
+  #    url: url
+  #    dest: pasta    
+
+  #- name: clone git 
+  #  git:
+   #  repo: "https"
+   #  dest: directory
+   #  clone: yes
+   #  forces: yes   
+  #- name: templete de caonfig
+  #  template:
+   #  src: application.properties
+   #  dest: /opt/aplication/src/main/resources/application.properties
+  
+  #- name: Gerar Packager
+  #  command: mvn -f /opt/aplication/pom.xml package
+  #  become_user: app
+
+  #- name: Registrado  version
+  #  shell:
+  #       cmd: mvn -o -q -Dexec.executable=echo -Dexec.args="${pr.version}" exec:exec
+  #       chdir: /opt/application/
+  #  register: app_version
+  #  become_user: app
+
+  #- name: service systemd
+  #   template: 
+  #       src:  etc/systemd/application.service > criar hierarquia de pastas no templates
+  #       desc:  /etc/systemd/application.service
+  #   notify: reload daemon
+  #- name: iniciando  servico
+  #  service:
+  #      name: applicarion
+  #      state: restart
+  #
+ 
+  #handlers:
+  #  - name: reload app
+  #    systemd:
+  #      state: restart
+  #      daemon_reload: yes
+  #      name: 'application'
+  #  - name: reload daemon   
+  #    systemd: 
+  #      daemon_reexec: yes       
+
+             
+
+
+
