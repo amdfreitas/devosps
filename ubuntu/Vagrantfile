@@ -1,0 +1,71 @@
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "ubuntu/focal64"
+  config.vm.box_check_update = false
+  
+  config.vm.define "server1" do |server1| 
+      server1.vm.hostname="srv01" 
+      
+      (0..0).each do |i|
+        server1.vm.disk :disk, name: "disk-#{i}", size: "20GB"
+      end
+      server1.vm.network "private_network", ip: "192.168.56.6"
+      server1.vm.network "forwarded_port", guest:8080, host:8089 
+      server1.vm.synced_folder "./file", "/file"
+      server1.vm.synced_folder ".", "/vagrant", disabled:true
+      server1.vm.provision "shell", path: "script.sh"
+      server1.vm.provider "virtualbox" do |vb|
+        vb.name = "srv01" 
+        # Display the VirtualBox GUI when booting the machine
+        vb.gui = false
+        # Customize the amount of memory on the VM:
+        vb.memory = "2048"
+        vb.cpus=2
+
+      end
+  end
+
+    config.vm.define "server2" do |server2| 
+      server2.vm.hostname="srv02" 
+   
+      (0..0).each do |i|
+        server2.vm.disk :disk, name: "disk-#{i}", size: "20GB"
+      end
+      server2.vm.network "private_network", ip: "192.168.56.5"
+      server2.vm.network "forwarded_port", guest:9000, host:8090 
+      server2.vm.synced_folder "./filesq", "/filesq"
+      server2.vm.synced_folder ".", "/vagrant", disabled:true
+      server2.vm.provision "shell", path: "scriptsq.sh"
+      server2.vm.provider "virtualbox" do |vbsq|
+        vbsq.name = "srv02" 
+        # Display the VirtualBox GUI when booting the machine
+        vbsq.gui = false
+        # Customize the amount of memory on the VM:
+        vbsq.memory = "2048"
+        vbsq.cpus=1
+
+      end
+  end  
+
+    config.vm.define "server3" do |server3| 
+      server3.vm.hostname="srv03" 
+      (0..0).each do |i|
+        server3.vm.disk :disk, name: "disk-#{i}", size: "20GB"
+      end
+      server3.vm.network "private_network", ip: "192.168.56.5"
+      server3.vm.network "forwarded_port", guest:3000, host:3001
+      server3.vm.synced_folder "./file", "/file"
+      server3.vm.synced_folder ".", "/vagrant", disabled:true
+  
+      server3.vm.provider "virtualbox" do |vb|
+        vb.name = "srv03" 
+        # Display the VirtualBox GUI when booting the machine
+        vb.gui = false
+        # Customize the amount of memory on the VM:
+        vb.memory = "1024"
+        vb.cpus=1
+  
+      end
+  end
+
+end
