@@ -1,0 +1,1 @@
+{"rsync":{"/file":{"type":"rsync","guestpath":"/file","hostpath":"/home/amdfreitas/Workspace/devosps/cluster-kind/file","disabled":false,"__vagrantfile":true,"owner":"vagrant","group":"vagrant"}}}
