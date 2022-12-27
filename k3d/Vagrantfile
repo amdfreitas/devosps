@@ -1,0 +1,32 @@
+swarns={
+  'cluster-k3d' => {:ip =>'18',:name =>'manager', :box =>'centos/7'},
+}
+Vagrant.configure("2") do |config|
+
+  swarns.each do |nome, conf|
+    config.vm.define "#{nome}" do |server1|
+        server1.vm.box = "centos/7"
+        server1.vm.box_check_update = false
+        server1.vm.synced_folder "./file", "/file", type: "rsync"
+        server1.vm.synced_folder ".", "/vagrant", disabled:true
+
+        if "#{nome}" == 'cluster-k3d'  then
+              server1.vm.network "forwarded_port", guest:30779, host:8099
+              server1.vm.network "private_network", ip: "192.168.56.#{conf[:ip]}"
+              server1.vm.hostname="#{nome}" 
+              server1.vm.provision "shell", path: "file/provisionkd.sh"
+              server1.vm.provider "virtualbox" do |vb|
+                vb.name = "#{nome}"
+                # Display the VirtualBox GUI when booting the machine
+                vb.gui = false
+                # Customize the amount of memory on the VM:
+                vb.memory = "4056"
+                vb.cpus=3
+              end
+        end 
+
+    end 
+  
+  end  
+  
+end

@@ -24,5 +24,5 @@ sudo systemctl restart docker
 sudo usermod -aG docker vagrant
 
 chsh -s /usr/bin/zsh vagrant
-
-
+token='SWMTKN-1-31xvclyb207p3720shsenliin3syvc7xokr70glqdz61nxkmmz-90v2kno7x9wf8zyp2pfpxmelk'
+echo `docker swarm join --token $token 192.168.56.12:2377`
